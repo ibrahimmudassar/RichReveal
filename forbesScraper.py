@@ -1,7 +1,10 @@
-import requests;
+import collections;
 from bs4 import BeautifulSoup;
 from selenium import webdriver;
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager;
+import pandas as pd;
+import matplotlib.pyplot as plt;
+
 
 #Retrieve Forbes page content
 URL = "https://www.forbes.com/real-time-billionaires/";
@@ -10,7 +13,7 @@ browser = webdriver.Chrome(ChromeDriverManager().install());
 browser.get(URL);
 html = browser.page_source;
 soup = BeautifulSoup(html, "lxml");
-print(soup.prettify());
+#print(soup.prettify());
 
 #Retrieve age and name info from website and organize into dictionary
 names = [];
@@ -28,4 +31,9 @@ for billionaire in billionaires:
     name = billionaire.find("td", class_="name").find("a", class_="ng-binding").get_text();
     billiInfo[age][0].append(name);
 
-print(billiInfo);
+orderedBilliInfo = collections.OrderedDict(sorted(billiInfo.items()));
+#print(billiInfo);
+
+ageFreq = pd.DataFrame(orderedBilliInfo);
+
+frequencies = ageFreq.iloc[1];
