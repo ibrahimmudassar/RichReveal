@@ -1,2 +1,4 @@
-# BilliAgeCheck
-The idea for this project is to scrape readily available live Forbes information of the current top billionaires (in terms of net worth) and use that data to create a visual (line plot) that shows which age groups contain the most billionaires. The goal of this project is to learn more about web scraping with BeautifulSoup in Python, the Pandas Data Analysis library, and use of databases to create visual representations to be displayed on a ReactJS webpage.
+# RichReveal
+The idea for this project is to scrape readily available live Forbes information of the current top billionaires (in terms of net worth).
+
+This data is taken by using the internal API from forbes to get the data in a JSON format and then graphing it.
