@@ -1,39 +1,30 @@
-import collections;
-from bs4 import BeautifulSoup;
-from selenium import webdriver;
-from webdriver_manager.chrome import ChromeDriverManager;
-import pandas as pd;
-import matplotlib.pyplot as plt;
+import pandas as pd
+import plotly.express as px
+import requests
+
+url = "https://www.forbes.com/forbesapi/person/rtb/0/-estWorthPrev/true.json"
+resp = requests.get(url).json()['personList']['personsLists']
 
 
-#Retrieve Forbes page content
-URL = "https://www.forbes.com/real-time-billionaires/";
-#page = requests.get(URL);
-browser = webdriver.Chrome(ChromeDriverManager().install());
-browser.get(URL);
-html = browser.page_source;
-soup = BeautifulSoup(html, "lxml");
-#print(soup.prettify());
+df = pd.DataFrame.from_dict(resp)
+df['birthDate'] = pd.to_datetime(df['birthDate'], unit='ms')
+df["finalWorth"] = df["finalWorth"].apply(
+    lambda x: x * 10 ** 6)  # converting to USD
 
-#Retrieve age and name info from website and organize into dictionary
-names = [];
-billiInfo = {};
-billionaires = soup.find_all("tr", class_="base ng-scope");
+sz = df['finalWorth'].size-1
+df['Percentile'] = df['finalWorth'].rank(
+    method='max').apply(lambda x: 100.0 * (x - 1) / sz)
 
-for billionaire in billionaires:
-    age = int(billionaire.find("td", class_="age").find("span", class_="ng-binding").get_text())
-    
-    if(age not in billiInfo.keys()):
-        billiInfo[age] = [[], 1];
-    else:
-        billiInfo[age][1] = billiInfo[age][1] + 1;
+fig = px.scatter(df, x="birthDate", y="finalWorth",
+                 color="gender", hover_data=['uri'],
+                 marginal_x="histogram", marginal_y="violin",
+                 title="Date of Birth v. Net Worth",
+                 labels={
+                     "birthDate": "Date of Birth",
+                     "finalWorth": "Net Worth (in USD)",
+                     "gender": "Gender"
+                 },)
 
-    name = billionaire.find("td", class_="name").find("a", class_="ng-binding").get_text();
-    billiInfo[age][0].append(name);
+fig.write_image("scatter.png", height=1080, width=1920, scale=3)
 
-orderedBilliInfo = collections.OrderedDict(sorted(billiInfo.items()));
-#print(billiInfo);
-
-ageFreq = pd.DataFrame(orderedBilliInfo);
-
-frequencies = ageFreq.iloc[1];
+df.to_csv("billionaires.csv", encoding='utf-8', index=False)
