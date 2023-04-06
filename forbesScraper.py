@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import requests
 
-url = "https://www.forbes.com/forbesapi/person/rtb/0/-estWorthPrev/true.json"
+url = "https://www.forbes.com/forbesapi/person/rtb/0/-estWorthPrev/true.json?fields=rank,uri,personName,lastName,gender,source,countryOfCitizenship,birthDate,finalWorth,estWorthPrev,imageExists,squareImage"
 resp = requests.get(url).json()['personList']['personsLists']
 
 
@@ -13,7 +13,7 @@ df["finalWorth"] = df["finalWorth"].apply(
 
 sz = df['finalWorth'].size-1
 df['Percentile'] = df['finalWorth'].rank(
-    method='max').apply(lambda x: 100.0 * (x - 1) / sz)
+    method='max').apply(lambda x: round(100.0 * (x - 1) / sz, 3))
 
 fig = px.scatter(df, x="birthDate", y="finalWorth",
                  color="gender", hover_data=['uri'],
