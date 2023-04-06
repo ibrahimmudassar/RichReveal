@@ -1,9 +1,8 @@
 $(document).ready(function () {
   // DataTable
   var table = $("#mainTable").DataTable({
-    autoFill: true,
     stateSave: true,
-    order: [[3, "desc"]],
+    order: [[5, "desc"]],
 
     scrollY: "98vh",
     scrollCollapse: true,
