@@ -32,7 +32,13 @@ $(document).ready(function () {
       { data: "source" },
       { data: "birthDate" },
       { data: "countryOfCitizenship" },
-      { data: "finalWorth" },
+      { data: "finalWorth",
+        render: function (data) {
+          var number = $.fn.dataTable.render
+            .number(",", ".", 0, "$")
+            .display(data);
+
+          return number; },
       { data: "Percentile" },
     ],
   });
