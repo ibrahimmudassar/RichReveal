@@ -2,7 +2,7 @@ name: run forbesScraper.py
 
 on:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "0 */6 * * *"
 
 jobs:
   build:
@@ -22,3 +22,16 @@ jobs:
 
       - name: execute py script # run main.py
         run: python forbesScraper.py
+
+      - name: setup git config
+        run: |
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: commit
+        continue-on-error: true # if there is nothing to push continue
+        run: |
+          # Stage the file, commit and push
+          git add .
+          git commit -m "GitHub Actions Bot"
+          git push

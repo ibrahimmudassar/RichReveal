@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 import requests
 
-url = "https://www.forbes.com/forbesapi/person/rtb/0/-estWorthPrev/true.json?fields=rank,uri,personName,lastName,gender,source,countryOfCitizenship,birthDate,finalWorth,estWorthPrev,imageExists,squareImage"
+url = "https://www.forbes.com/forbesapi/person/billionaires/2023/position/true.json?filter=finalWorth,age,country,qas,rank,category,person,personName,organization,gender,squareImage"
 resp = requests.get(url).json()['personList']['personsLists']
 
 

@@ -1,8 +1,12 @@
 $(document).ready(function () {
+  const obj = JSON.parse(
+    "https://www.forbes.com/forbesapi/person/billionaires/2023/position/true.json?filter=uri,finalWorth,age,country,source,qas,rank,category,person,personName,industries,organization,gender,firstName,lastName,squareImage,bios"
+  );
+  console.log(obj);
   // DataTable
   var table = $("#mainTable").DataTable({
     stateSave: true,
-    order: [[5, "desc"]],
+    order: [[6, "desc"]],
 
     scrollY: "98vh",
     scrollCollapse: true,
@@ -30,15 +34,19 @@ $(document).ready(function () {
       { data: "personName" },
       { data: "rank" },
       { data: "source" },
+      { data: "category" },
       { data: "birthDate" },
       { data: "countryOfCitizenship" },
-      { data: "finalWorth",
+      {
+        data: "finalWorth",
         render: function (data) {
           var number = $.fn.dataTable.render
             .number(",", ".", 0, "$")
             .display(data);
 
-          return number; },
+          return number;
+        },
+      },
       { data: "Percentile" },
     ],
   });
