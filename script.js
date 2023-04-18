@@ -1,8 +1,4 @@
 $(document).ready(function () {
-  const obj = JSON.parse(
-    "https://www.forbes.com/forbesapi/person/billionaires/2023/position/true.json?filter=uri,finalWorth,age,country,source,qas,rank,category,person,personName,industries,organization,gender,firstName,lastName,squareImage,bios"
-  );
-  console.log(obj);
   // DataTable
   var table = $("#mainTable").DataTable({
     stateSave: true,

@@ -7,7 +7,7 @@ resp = requests.get(url).json()['personList']['personsLists']
 
 
 df = pd.DataFrame.from_dict(resp)
-df['birthDate'] = pd.to_datetime(df['birthDate'], unit='ms')
+df['birthDate'] = pd.to_datetime(df['birthDate'], unit='ms').dt.date
 df["finalWorth"] = df["finalWorth"].apply(
     lambda x: x * 10 ** 6)  # converting to USD
 
