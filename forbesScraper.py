@@ -3,6 +3,7 @@ import plotly.express as px
 import requests
 
 url = "https://www.forbes.com/forbesapi/person/billionaires/2023/position/true.json?filter=finalWorth,age,country,qas,rank,category,person,personName,organization,gender,squareImage"
+print(requests.get(url).status_code)
 resp = requests.get(url).json()['personList']['personsLists']
 
 
